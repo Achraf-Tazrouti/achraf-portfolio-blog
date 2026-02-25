@@ -1,8 +1,14 @@
 const Post = require('../models/Post');
 
 exports.getPosts = async (req, res) => {
-  const posts = await Post.find().sort({ createdAt: -1 });
-  res.json(posts);
+  try {
+    const posts = await Post.find();
+    console.log('Aantal posts uit DB:', posts.length); // <-- voeg deze regel toe
+    res.json(posts);
+  } catch (err) {
+    console.error('Fout bij ophalen posts:', err); // <-- en deze
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 exports.createPost = async (req, res) => {
